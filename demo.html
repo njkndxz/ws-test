@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>WebSocket Demo</h1>
+    <script>
+        function sendMsg() {
+            var msg = document.getElementById("msg");
+            ws.send(msg.value);
+            msg.value = "";
+        }
+    </script>
+    <input type="text" id="msg">
+    <button onclick="sendMsg()">发送</button>
+    <textarea id="tare" cols="30" rows="10"></textarea>
+    <script>
+        let tare = document.getElementById("tare");
+        var ws = new WebSocket("ws://localhost:60001");
+        ws.onopen = function () {
+            console.log("连接成功");
+            ws.send("hello");
+        }
+        ws.onmessage = function (evt) {
+            tare.value += evt.data + "\n";
+            console.log("收到消息：" + evt.data);
+        }
+        ws.onclose = function () {
+            console.log("连接关闭");
+        }
+        ws.onerror = function () {
+            console.log("发生错误");
+        }
+    </script>
+</body>
+</html>
